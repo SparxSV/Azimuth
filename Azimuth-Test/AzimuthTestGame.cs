@@ -11,12 +11,25 @@ namespace Azimuth_Test
 	{
 		private ImageWidget image;
 		private Button button;
+
+		private void OnClickButton()
+		{
+			Console.WriteLine("Hello World!");
+		}
 		
 		public override void Load()
 		{
 			image = new ImageWidget(Vector2.Zero, new Vector2(800, 800), "bayomayo");
 			button = new Button(new Vector2(290, 510), new Vector2(150, 75), Button.RenderSettings.normal, "hehehe butt");
-			UIManager.Add(image);
+			button.SetDrawLayer(100);
+			button.AddListener(OnClickButton);
+			button.AddListener(() =>
+			{
+				UIManager.Add(image);
+				Console.WriteLine("Image displayed!");
+			});
+			
+			//UIManager.Add(image);
 			UIManager.Add(button);
 		}
 

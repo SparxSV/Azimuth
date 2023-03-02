@@ -6,6 +6,8 @@ namespace Azimuth.UI
 {
 	public class Button : InteractableWidget
 	{
+		public delegate void OnClickEvent();
+		
 		public class RenderSettings
 		{
 			// this allows us to not have to worry about using new when creating new button
@@ -27,6 +29,8 @@ namespace Azimuth.UI
 			public Color textColor;
 		}
 
+		private OnClickEvent? onClick;
+
 		private readonly float roundedness;
 		
 		private readonly string text;
@@ -43,7 +47,7 @@ namespace Azimuth.UI
 		{
 			roundedness = _settings.roundedness;
 
-			text = _settings.text;
+			text = _text;
 			fontSize = _settings.fontSize;
 			fontSpacing = _settings.fontSpacing;
 			
@@ -54,6 +58,24 @@ namespace Azimuth.UI
 			textSize = Raylib.MeasureTextEx(font, text, fontSize, fontSpacing) * 0.5f;
 
 			drawLayer = 100;
+		}
+
+		public void AddListener(OnClickEvent _event)
+		{
+			if(onClick == null)
+			{
+				onClick = _event;
+			}
+			else
+			{
+				onClick += _event;
+			}
+		}
+
+		public void RemoveListener(OnClickEvent _event)
+		{
+			if(onClick != null)
+				onClick -= _event;
 		}
 
 		public override void Draw()
@@ -67,6 +89,7 @@ namespace Azimuth.UI
 			if(_state != InteractionState.Selected && _oldState == InteractionState.Selected)
 			{
 				// the button is no longer being clicked, so do event.
+				onClick?.Invoke();
 			}
 		}
 	}

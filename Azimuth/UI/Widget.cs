@@ -30,6 +30,7 @@ namespace Azimuth.UI
 		
 		public virtual void Draw()
 		{
+			// Gets bounds rec
 			Raylib.DrawRectangleRec(Bounds, Color.WHITE);
 		}
 
